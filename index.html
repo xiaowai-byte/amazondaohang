@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>亚马逊工具导航站</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #ff9900;
+            padding-bottom: 20px;
+        }
+        h1 {
+            color: #232f3e;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 1rem;
+        }
+        .link-section {
+            margin-bottom: 40px;
+        }
+        h2 {
+            font-size: 1.5rem;
+            border-left: 5px solid #ff9900;
+            padding-left: 10px;
+            margin-bottom: 20px;
+            color: #232f3e;
+        }
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+        }
+        .link-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            overflow: hidden;
+        }
+        .link-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+        .link-card a {
+            display: block;
+            padding: 15px 20px;
+            text-decoration: none;
+            color: #333;
+            height: 100%;
+        }
+        .link-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        .link-url {
+            color: #0066c0;
+            font-size: 0.85rem;
+            word-break: break-all;
+        }
+        .amazon-group {
+            background-color: #ffefd5;
+        }
+        .tool-group {
+            background-color: #e6f7ff;
+        }
+        .translation-group {
+            background-color: #f0f8e6;
+        }
+        .image-group {
+            background-color: #fff0f5;
+        }
+        .logistics-group {
+            background-color: #e6e6fa;
+        }
+        .ai-group {
+            background-color: #f5f5dc;
+        }
+        .converter-group {
+            background-color: #e0ffff;
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .search-box {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        #search {
+            padding: 10px 15px;
+            width: 80%;
+            max-width: 500px;
+            border: 2px solid #ddd;
+            border-radius: 30px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        #search:focus {
+            border-color: #ff9900;
+        }
+        .dark-mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #232f3e;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        .dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+        .dark-mode h1, .dark-mode h2 {
+            color: #fff;
+        }
+        .dark-mode .link-card {
+            background-color: #2d2d2d;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+        }
+        .dark-mode .link-card a {
+            color: #e0e0e0;
+        }
+        .dark-mode .link-url {
+            color: #4da3ff;
+        }
+        .dark-mode .amazon-group {
+            background-color: #3d3223;
+        }
+        .dark-mode .tool-group {
+            background-color: #1c3444;
+        }
+        .dark-mode .translation-group {
+            background-color: #2a3d26;
+        }
+        .dark-mode .image-group {
+            background-color: #3d2a35;
+        }
+        .dark-mode .logistics-group {
+            background-color: #2a2a3d;
+        }
+        .dark-mode .ai-group {
+            background-color: #3d3d2a;
+        }
+        .dark-mode .converter-group {
+            background-color: #1a3a3a;
+        }
+    </style>
+</head>
+<body>
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()">☀</button>
+    <div class="container">
+        <header>
+            <h1>亚马逊工具导航站</h1>
+            <p class="subtitle">集合跨境电商常用工具和网站</p>
+        </header>
+
+        <div class="search-box">
+            <input type="text" id="search" placeholder="搜索网站..." oninput="searchLinks()">
+        </div>
+
+        <div class="link-section">
+            <h2>亚马逊官方</h2>
+            <div class="link-grid">
+                <div class="link-card amazon-group">
+                    <a href="https://www.amazon.com/" target="_blank">
+                        <div class="link-title">亚马逊官网</div>
+                        <div class="link-url">https://www.amazon.com/</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="link-section">
+            <h2>亚马逊工具</h2>
+            <div class="link-grid">
+                <div class="link-card tool-group">
+                    <a href="https://www.sellersprite.com/" target="_blank">
+                        <div class="link-title">卖家精灵</div>
+                        <div class="link-url">https://www.sellersprite.com/</div>
+                    </a>
+                </div>
+                <div class="link-card tool-group">
+                    <a href="https://www.oalur.com/" target="_blank">
+                        <div class="link-title">欧鹭</div>
+                        <div class="link-url">https://www.oalur.com/</div>
+                    </a>
+                </div>
+                <div class="link-card tool-group">
+                    <a href="http://154.21.202.167/#/dashboard" target="_blank">
+                        <div class="link-title">魔法网站</div>
+                        <div class="link-url">http://154.21.202.167/#/dashboard</div>
+                    </a>
+                </div>
+                <div class="link-card tool-group">
+                    <a href="https://www.etsy.com/" target="_blank">
+                        <div class="link-title">ETSY选品网站</div>
+                        <div class="link-url">https://www.etsy.com/</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="link-section">
+            <h2>翻译工具</h2>
+            <div class="link-grid">
+                <div class="link-card translation-group">
+                    <a href="https://translate.google.com.hk/?hl=zh-CN&sourceid=cnhp" target="_blank">
+                        <div class="link-title">谷歌翻译</div>
+                        <div class="link-url">https://translate.google.com.hk/?hl=zh-CN&sourceid=cnhp</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="link-section">
+            <h2>图片工具</h2>
+            <div class="link-grid">
+                <div class="link-card image-group">
+                    <a href="https://pl.pinterest.com/" target="_blank">
+                        <div class="link-title">Pinterest图片网站</div>
+                        <div class="link-url">https://pl.pinterest.com/</div>
+                    </a>
+                </div>
+                <div class="link-card image-group">
+                    <a href="https://xcv-123.github.io/tupianyasuogongjunew/" target="_blank">
+                        <div class="link-title">图片压缩工具</div>
+                        <div class="link-url">https://xcv-123.github.io/tupianyasuogongjunew/</div>
+                    </a>
+                </div>
+                <div class="link-card image-group">
+                    <a href="https://www.canva.cn/" target="_blank">
+                        <div class="link-title">可画设计工具</div>
+                        <div class="link-url">https://www.canva.cn/</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="link-section">
+            <h2>物流工具</h2>
+            <div class="link-grid">
+                <div class="link-card logistics-group">
+                    <a href="https://daqgyl.nextsls.com" target="_blank">
+                        <div class="link-title">大千物流</div>
+                        <div class="link-url">https://daqgyl.nextsls.com</div>
+                    </a>
+                </div>
+                <div class="link-card logistics-group">
+                    <a href="https://t.17track.net/" target="_blank">
+                        <div class="link-title">全球物流查询</div>
+                        <div class="link-url">https://t.17track.net/</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="link-section">
+            <h2>AI工具</h2>
+            <div class="link-grid">
+                <div class="link-card ai-group">
+                    <a href="https://chat.deepseek.com/" target="_blank">
+                        <div class="link-title">Deepseek官网</div>
+                        <div class="link-url">https://chat.deepseek.com/</div>
+                    </a>
+                </div>
+                <div class="link-card ai-group">
+                    <a href="/?oai-dm=1" target="_blank">
+                        <div class="link-title">GPT官网</div>
+                        <div class="link-url">/?oai-dm=1</div>
+                    </a>
+                </div>
+                <div class="link-card ai-group">
+                    <a href="https://www.wenxiaobai.com/" target="_blank">
+                        <div class="link-title">问小白</div>
+                        <div class="link-url">https://www.wenxiaobai.com/</div>
+                    </a>
+                </div>
+                <div class="link-card ai-group">
+                    <a href="https://hix.ai/home" target="_blank">
+                        <div class="link-title">HIX站</div>
+                        <div class="link-url">https://hix.ai/home</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="link-section">
+            <h2>单位换算</h2>
+            <div class="link-grid">
+                <div class="link-card converter-group">
+                    <a href="https://www.baidu.com/s?ie=UTF-8&wd=%E5%8D%83%E5%85%8B%E5%92%8C%E7%A3%85" target="_blank">
+                        <div class="link-title">千克和磅换算</div>
+                        <div class="link-url">https://www.baidu.com/s?ie=UTF-8&wd=%E5%8D%83%E5%85%8B%E5%92%8C%E7%A3%85</div>
+                    </a>
+                </div>
+                <div class="link-card converter-group">
+                    <a href="https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&tn=baidu&wd=%E5%8E%98%E7%B1%B3%E5%92%8C%E8%8B%B1%E5%AF%B8" target="_blank">
+                        <div class="link-title">厘米和英寸换算</div>
+                        <div class="link-url">https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&tn=baidu&wd=%E5%8E%98%E7%B1%B3%E5%92%8C%E8%8B%B1%E5%AF%B8</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2025 亚马逊工具导航站 | 上次更新: 2025-03-27</p>
+        </footer>
+    </div>
+
+    <script>
+        function searchLinks() {
+            const searchInput = document.getElementById('search').value.toLowerCase();
+            const linkCards = document.querySelectorAll('.link-card');
+            
+            linkCards.forEach(card => {
+                const title = card.querySelector('.link-title').textContent.toLowerCase();
+                const url = card.querySelector('.link-url').textContent.toLowerCase();
+                
+                if (title.includes(searchInput) || url.includes(searchInput)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // 检查每个部分是否有可见的卡片
+            const sections = document.querySelectorAll('.link-section');
+            sections.forEach(section => {
+                const visibleCards = section.querySelectorAll('.link-card[style="display: block"]').length;
+                const allCardsHidden = section.querySelectorAll('.link-card[style="display: none"]').length === section.querySelectorAll('.link-card').length;
+                
+                if (allCardsHidden) {
+                    section.style.display = 'none';
+                } else {
+                    section.style.display = 'block';
+                }
+            });
+        }
+        
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.querySelector('.dark-mode-toggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.innerText = '☀';
+            } else {
+                button.innerText = '☾';
+            }
+        }
+    </script>
+</body>
+</html>
